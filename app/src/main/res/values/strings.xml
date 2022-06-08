@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">INVENTORY SAMPLE</string>
+    <string name="action_start_discovering">SRART DISCOVERY</string>
+    <string name="action_stop_discovering">STOP DISCOVERY</string>
+
+    <string name="action_inventory">INVENTORY</string>
+    <string name="action_stop">STOP</string>
+    <string name="connection_state_label">Connection State :</string>
+    <string name="connection_state_connected">CONNECTED</string>
+    <string name="connection_state_connecting">CONNECTING</string>
+    <string name="connection_state_disconnected">DISCONNECTED</string>
+
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+
+    <string name="msg_denied_permission">If you do not grant permission, you cannot use the app.</string>
+    <string name="msg_enable_bluetooth">If the bluetooth function is not activated, the APP cannot be used.</string>
+    <string name="msg_disconnect_error">It"'"s an unusual approach Please relaunch the app.</string>
+    <string name="msg_wait">Please wait</string>
+    <string name="msg_fail_connect">Failed to connect remote device</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_seag_loading_animation_2"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:fromDegrees="0"
+    android:toDegrees="900"
+
+    >
+
+</rotate>
+
+    <!--지훈님이 만든 이미지 애니메이션 효과-->

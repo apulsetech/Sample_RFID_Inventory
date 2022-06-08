@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="state_label_text_size">16sp</dimen>
+    <dimen name="wait_progress_padding">12dp</dimen>
+    <dimen name="wait_progress_width">96dp</dimen>
+    <dimen name="wait_progress_height">96dp</dimen>
+</resources>
