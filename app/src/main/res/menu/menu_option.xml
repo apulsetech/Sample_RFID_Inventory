@@ -4,18 +4,21 @@
 
     <item
         android:id="@+id/discovery_device"
-        app:showAsAction="never"
-        android:title="Discovery_Device"/>
+        android:icon="@drawable/ic_discovery"
+        android:title="@string/menu_discovery_device"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/reconnect"
-        app:showAsAction="never"
-        android:title="Reconnect"/>
+        android:icon="@drawable/ic_reconnect"
+        android:title="@string/menu_reconnect_device"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/disconnect"
-        app:showAsAction="never"
-        android:title="Disconnect"/>
+        android:icon="@drawable/ic_disconnect"
+        android:title="@string/menu_disconnect_device"
+        app:showAsAction="always"/>
 
 
 </menu>

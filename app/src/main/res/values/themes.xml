@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Rfid_Inventory_Sample" parent="Theme.AppCompat.Light">
+    <style name="Theme.Rfid_Inventory_Sample" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">#004FEE</item>
+        <item name="colorPrimaryVariant">#0C3993</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondary">#0396DA</item>
+        <item name="colorSecondaryVariant">#015187</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -18,7 +18,96 @@
         <item name="toolbarStyle">@style/MainActionBar</item>
     </style>
 
+    <style name="Theme.Splash" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="MainActionBar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="titleTextColor">@color/action_bar_text_color</item>
     </style>
+
+    <style name="LayoutGroup">
+        <item name="android:layout_marginTop">@dimen/label_interval_size</item>
+        <item name="android:padding">@dimen/group_padding</item>
+        <item name="android:background">@drawable/bg_group</item>
+    </style>
+
+    <style name="LayoutHorizontalOption">
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TextView.OptionLabel" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/option_label</item>
+        <item name="android:textSize">@dimen/option_label_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.SubOptionLabel" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/sub_option_label</item>
+        <item name="android:textSize">@dimen/sub_option_label_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.SubOptionSpinnerValue" parent="Widget.AppCompat.Spinner">
+        <item name="android:layout_marginVertical" tools:targetApi="o">@dimen/spinner_vertical_margin</item>
+        <item name="android:textColor">@color/sub_option_value</item>
+        <item name="android:textSize">@dimen/sub_option_label_text_size</item>
+    </style>
+
+    <style name="TextView.SubOptionValue" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/sub_option_value</item>
+        <item name="android:textSize">@dimen/sub_option_label_text_size</item>
+    </style>
+
+    <style name="TextView.SubOptionUnit" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/sub_option_value</item>
+        <item name="android:textSize">@dimen/sub_option_label_text_size</item>
+        <item name="android:gravity">end</item>
+    </style>
+
+    <style name="TextView.SubOptionEditValue" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/sub_option_value</item>
+        <item name="android:textSize">@dimen/sub_option_label_text_size</item>
+    </style>
+
+    <style name="Button.AppBase" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_button</item>
+        <item name="android:layout_margin">@dimen/button_margin</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+    </style>
+    <style name="Button.Action" parent="Button.AppBase">
+        <item name="android:textSize">@dimen/action_button_text_size</item>
+        <item name="android:layout_height">@dimen/action_button_height</item>
+    </style>
+    <style name="Button.Option" parent="Button.AppBase">
+        <item name="android:textSize">@dimen/option_button_text_size</item>
+        <item name="android:layout_height">@dimen/option_button_height</item>
+    </style>
+    <style name="Button.SubOption" parent="Button.AppBase">
+        <item name="android:textSize">@dimen/sub_option_button_text_size</item>
+        <item name="android:layout_height">@dimen/sub_option_button_height</item>
+    </style>
+
+    <style name="ItemSpliteVertical">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/item_splite_width</item>
+        <item name="android:layout_marginVertical" tools:targetApi="o">@dimen/item_splite_margin_vertical</item>
+        <item name="android:layout_marginHorizontal" tools:targetApi="o">@dimen/item_splite_margin_horizontal</item>
+        <item name="android:background">@color/item_splite_color</item>
+    </style>
+
+    <style name="TextView.SelectMaskLabel" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">@dimen/select_mask_text_size</item>
+        <item name="android:textColor">@color/select_mask_text_color</item>
+    </style>
+
+    <style name="TextView.SelectMaskValue" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginStart">@dimen/widget_interval_size</item>
+        <item name="android:textSize">@dimen/select_mask_text_size</item>
+        <item name="android:textColor">@color/select_mask_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

@@ -1,30 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="@dimen/activity_padding"
     tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layout_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/version_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@string/version_label"
+            style="@style/TextView.OptionLabel"
+            app:layout_constraintHorizontal_weight="@dimen/option_label_weight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/version"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="v1.0.0.1"
+            style="@style/TextView.SubOptionValue"
+            app:layout_constraintHorizontal_weight="@dimen/option_value_weight"
+            app:layout_constraintStart_toEndOf="@+id/version_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        app:layout_constraintTop_toBottomOf="@+id/layout_version"
         app:layout_constraintBottom_toTopOf="@+id/inventory_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/connect_state_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:text="@string/connection_state_label"
-            android:textColor="@color/connect_state_label"
-            android:textSize="@dimen/state_label_text_size"
-            android:textStyle="bold"
+            style="@style/TextView.OptionLabel"
+            app:layout_constraintHorizontal_weight="@dimen/option_label_weight"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/connect_state"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,8 +71,9 @@
             android:id="@+id/connect_state"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="DISCONNECT"
-            android:textColor="@color/connect_state_label"
+            tools:text="@string/connection_state_disconnected"
+            style="@style/TextView.SubOptionValue"
+            app:layout_constraintHorizontal_weight="@dimen/option_value_weight"
             app:layout_constraintStart_toEndOf="@+id/connect_state_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,96 +85,350 @@
         android:id="@+id/inventory_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/light_gray"
-        app:layout_constraintHeight_percent="0.7"
-        app:layout_constraintBottom_toTopOf="@id/inventory_count"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        android:background="@drawable/bg_list_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_status"
+        app:layout_constraintBottom_toTopOf="@id/layout_options"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_status" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/inventory_count"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:background="@color/light_gray"
-        android:padding="10dp"
-
-        app:layout_constraintWidth_percent="0.4"
-        app:layout_constraintHeight_percent="0.23"
-        app:layout_constraintTop_toBottomOf="@id/inventory_list"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        android:background="@drawable/bg_group"
+        android:padding="@dimen/group_padding"
+        app:layout_constraintTop_toBottomOf="@+id/inventory_list"
+        app:layout_constraintBottom_toTopOf="@id/layout_select_mask"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_inventory"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/all_count"
-            android:layout_width="wrap_content"
+            android:id="@+id/rf_power_label"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="0"
-            android:textSize="20sp"
-
-            android:textStyle="bold" />
+            android:layout_marginEnd="10dp"
+            android:text="@string/rf_power_label"
+            style="@style/TextView.OptionLabel"
+            app:layout_constraintHorizontal_weight="@dimen/option_label_weight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rf_power"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
-            android:id="@+id/overlap_count"
-            android:layout_width="wrap_content"
+            android:id="@+id/rf_power"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="0"
-            android:textStyle="bold"
-            android:textSize="50sp"
-            android:gravity="center"
-            />
+            tools:text="30 dBm"
+            style="@style/TextView.SubOptionSpinnerValue"
+            app:layout_constraintHorizontal_weight="@dimen/option_value_weight"
+            app:layout_constraintStart_toEndOf="@+id/rf_power_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/button_inventory"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/action_inventory"
-        android:textSize="22sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_select_mask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        android:background="@color/select_mask_background"
+        android:padding="@dimen/group_padding"
+        app:layout_constraintTop_toBottomOf="@+id/layout_options"
+        app:layout_constraintBottom_toTopOf="@id/layout_control"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        app:layout_constraintWidth_percent="0.55"
-        app:layout_constraintHeight_percent="0.11"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_select_mask_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_select_mask_inventory"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        app:layout_constraintBottom_toTopOf="@id/button_clear"
-        app:layout_constraintStart_toEndOf="@id/inventory_count"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inventory_list" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_selection_mask_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/selection_mask_state"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
-        android:id="@+id/button_clear"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="CLEAR"
-        android:textSize="18sp"
+                <TextView
+                    android:id="@+id/selection_mask_count_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_mask_count"
+                    style="@style/TextView.SelectMaskLabel"
+                    app:layout_constraintHorizontal_weight="3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/selection_mask_count"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-        app:layout_constraintWidth_percent="0.27"
-        app:layout_constraintHeight_percent="0.11"
-        app:layout_constraintTop_toBottomOf="@id/button_inventory"
-        app:layout_constraintStart_toEndOf="@id/inventory_count"
-        app:layout_constraintEnd_toStartOf="@id/button_mask"
+                <TextView
+                    android:id="@+id/selection_mask_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="0"
+                    style="@style/TextView.SelectMaskValue"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/selection_mask_count_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/selection_mask_state"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="@string/select_mask_disabled"
+                style="@style/TextView.SelectMaskValue"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/layout_selection_mask_count"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_select_mask_inventory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/layout_select_mask_option"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_selection_mask_session"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layout_selection_mask_target"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/selection_mask_session_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_mask_session_label"
+                    style="@style/TextView.SelectMaskLabel"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/selection_mask_session"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/selection_mask_session"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="S0"
+                    style="@style/TextView.SelectMaskValue"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/selection_mask_session_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_selection_mask_target"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/layout_selection_mask_session"
+                app:layout_constraintEnd_toStartOf="@+id/layout_selection_mask_selection_flag"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/selection_mask_target_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_mask_target_label"
+                    style="@style/TextView.SelectMaskLabel"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/selection_mask_target"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/selection_mask_target"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="A"
+                    style="@style/TextView.SelectMaskValue"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/selection_mask_target_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_selection_mask_selection_flag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/layout_selection_mask_target"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/selection_mask_selection_flag_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_mask_select_flag_label"
+                    style="@style/TextView.SelectMaskLabel"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/selection_mask_selection_flag"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/selection_mask_selection_flag"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="SL"
+                    style="@style/TextView.SelectMaskValue"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/selection_mask_selection_flag_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        app:layout_constraintTop_toBottomOf="@+id/layout_select_mask"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <Button
-        android:id="@+id/button_mask"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="MASK"
-        android:textSize="18sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inventory_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/count_layout_padding"
+            android:background="@drawable/bg_count"
+            app:layout_constraintHorizontal_weight="@dimen/control_count_weight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/layout_buttons"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        app:layout_constraintWidth_percent="0.27"
-        app:layout_constraintHeight_percent="0.11"
+            <TextView
+                android:id="@+id/all_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                tools:text="0"
+                android:textSize="@dimen/all_count_text_size"
+                android:textColor="@color/all_count_text_color"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/overlap_count"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        app:layout_constraintTop_toBottomOf="@id/button_inventory"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_clear"
-        app:layout_constraintBottom_toBottomOf="parent"
+            <TextView
+                android:id="@+id/overlap_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="0"
+                android:textColor="@color/count_text_color"
+                android:textStyle="bold"
+                android:textSize="@dimen/count_text_size"
+                app:layout_constraintTop_toBottomOf="@+id/all_count"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/widget_interval_size"
+            app:layout_constraintHorizontal_weight="@dimen/control_button_weight"
+            app:layout_constraintStart_toEndOf="@+id/inventory_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/action_inventory"
+                android:layout_width="match_parent"
+                android:text="@string/action_inventory"
+                style="@style/Button.Action"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/layout_option_buttons"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_option_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/action_inventory"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <Button
+                    android:id="@+id/action_clear"
+                    android:layout_width="0dp"
+                    android:text="@string/action_clear"
+                    style="@style/Button.Option"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/action_mask"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <Button
+                    android:id="@+id/action_mask"
+                    android:layout_width="0dp"
+                    android:text="@string/action_mask"
+                    style="@style/Button.Option"
+                    app:layout_constraintStart_toEndOf="@+id/action_clear"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

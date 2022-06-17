@@ -5,14 +5,31 @@ plugins {
 android {
     compileSdk 31
 
-    defaultConfig {
-        applicationId "com.example.rfid_inventory_sample"
-        minSdk 23
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+    // Read version information from local file and increment as appropriate
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        def versionMajor = versionProps['VERSION_MAJOR'].toInteger()
+        def versionMinor = versionProps['VERSION_MINOR'].toInteger()
+        def versionRevision = versionProps['VERSION_REVISION'].toInteger()
+        def versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+
+        // Update the build number in the local file
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            applicationId "com.example.rfid_inventory_sample"
+            minSdk 23
+            targetSdk 31
+            versionCode 1
+            versionName "${versionMajor}.${versionMinor}.${versionRevision}." + String.format("%d", versionBuild)
+
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        }
     }
 
     buildTypes {

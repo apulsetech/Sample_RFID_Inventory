@@ -1,12 +1,15 @@
 package com.example.rfid_inventory_sample.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.rfid_inventory_sample.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.rfid_inventory_sample.R;
 import com.example.rfid_inventory_sample.items.TagItem;
 
@@ -16,42 +19,35 @@ import java.util.Map;
 
 public class TagListAdapter extends BaseAdapter {
 
-    private ArrayList<TagItem> list;
-    private Map<String, TagItem> map;
+    private ArrayList<TagItem> items;
+    private Map<String, TagItem> tagItems;
     private int totalCount;
 
-//    TextView textAllCount = ((MainActivity)MainActivity.mCOntext).txtAllCount;
-//    TextView textCount = ((MainActivity)MainActivity.mCOntext).txtCount;
-
-
     public TagListAdapter() {
-        this.list = new ArrayList<>();
-        this.map = new HashMap<>();
-        totalCount = 0;
+        this.items = new ArrayList<>();
+        this.tagItems = new HashMap<>();
+        this.totalCount = 0;
     }
 
     public void add(String tag){
         TagItem item = null;
 
-        if (this.map.containsKey(tag)) {
-            item = this.map.get(tag);
+        if (this.tagItems.containsKey(tag)) {
+            item = this.tagItems.get(tag);
             item.increamentCount();
         } else {
             item = new TagItem(tag);
-            this.list.add(item);
-            this.map.put(tag, item);
+            this.items.add(item);
+            this.tagItems.put(tag, item);
         }
-        totalCount++;
+        this.totalCount++;
         notifyDataSetChanged();
     }
 
     public void clear(){
-        this.list.clear();
-        this.map.clear();
-        totalCount = 0;
-
-
-
+        this.items.clear();
+        this.tagItems.clear();
+        this.totalCount = 0;
         notifyDataSetChanged();
     }
 
@@ -61,12 +57,12 @@ public class TagListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        return this.items.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return this.list.get(position);
+    public TagItem getItem(int position) {
+        return this.items.get(position);
     }
 
     @Override
@@ -76,29 +72,28 @@ public class TagListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TagListAdapter.ViewHolder holder = null;
-        if (null == convertView) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(R.layout.item_tag_list, null);
-            holder = new TagListAdapter.ViewHolder(convertView);
+        ViewHolder holder;
+        if (convertView == null) {
+            Context context = parent.getContext();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_tag_list, parent, false);
+            holder = new ViewHolder(convertView);
         } else {
-            holder = (TagListAdapter.ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
-        holder.display(list.get(position));
+        holder.display(this.items.get(position));
         return convertView;
     }
 
-    public void add(String address, String tagData) {
-    }
-
-    class ViewHolder{
+    class ViewHolder {
         private TextView txtTag;
         private TextView txtCount;
 
-    public ViewHolder(View parent){
-        txtTag= parent.findViewById(R.id.tag);
-        txtCount = parent.findViewById(R.id.count);
-        parent.setTag(this);
+    public ViewHolder(@NonNull View itemView){
+        txtTag= itemView.findViewById(R.id.tag);
+        txtCount = itemView.findViewById(R.id.count);
+        itemView.setTag(this);
     }
 
         public void display(TagItem item) {

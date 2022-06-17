@@ -1,20 +1,43 @@
+/*
+ * Copyright (C) Apulsetech,co.ltd
+ * Apulsetech, Shenzhen, China
+ *
+ * All rights reserved.
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose without fee is hereby granted, provided that this entire notice is
+ * included in all copies of any software which is or includes a copy or
+ * modification of this software and in all copies of the supporting
+ * documentation for such software.
+ *
+ * THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
+ * WARRANTY. IN PARTICULAR, NEITHER THE AUTHOR NOR APULSETECH MAKES ANY
+ * REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY OF
+ * THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+ *
+ *
+ * Project: ⍺X11 SDK Sample
+ *
+ * File: MainActivity.java
+ * Date: 2022.05.31
+ * Author: HyungChan Bae, chan941027@apulsetech.com
+ *
+ *
+ * Modify : 2022.06.09. ncsin4  Add selection mask activity
+ *
+ ****************************************************************************
+ */
+
 package com.example.rfid_inventory_sample;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,121 +45,127 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.apulsetech.lib.event.DeviceEvent;
 import com.apulsetech.lib.event.ReaderEventListener;
 import com.apulsetech.lib.remote.type.RemoteDevice;
 import com.apulsetech.lib.rfid.Reader;
+import com.apulsetech.lib.rfid.type.RFID;
+import com.apulsetech.lib.rfid.type.SelectionCriterias;
 import com.example.rfid_inventory_sample.adapters.TagListAdapter;
 import com.example.rfid_inventory_sample.data.Const;
 import com.example.rfid_inventory_sample.dialogs.MsgBox;
+import com.example.rfid_inventory_sample.dialogs.PowerGainDialog;
+import com.example.rfid_inventory_sample.dialogs.WaitDialog;
+import com.example.rfid_inventory_sample.utlities.AppInfoUtil;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements ReaderEventListener, View.OnClickListener {
-    private final String TAG = "MainActivity";
-
-    private static final int REQUEST_PERMISSION = 1000;
-    private static final int REQ_DISCOVERY_DEVICE = 1001;
-    private static final int REQUEST_ENABLE_BT = 1002;
+public class MainActivity extends AppCompatActivity implements ReaderEventListener,
+        View.OnClickListener {
+    private static final String TAG = "MainActivity";
 
     private static final int TIMEOUT = 30000;
 
-    private static final String[] PERMISSIONS_11 = {
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.BLUETOOTH_ADMIN,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-    };
+    private static final String PREF_NAME = "rfid_inventory_sample";
+    private static final String LAST_ADDRESS = "last_dev_address";
 
-    private static final String[] PERMISSIONS_12 = {
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_ADVERTISE
-    };
-
-    private BluetoothAdapter btAdapter;
-
-    private Reader mReader = null;
-
-    private Handler mHandler;
-
-    public TextView txtConnState;
+    private TextView txtVersion;
+    private TextView txtConnState;
     private ListView lstTags;
-    public TextView txtAllCount;
-    public TextView txtCount;
+    private TagListAdapter adpTags;
+    private TextView txtPowerLevel;
+    private TextView txtMaskCount;
+    private TextView txtMaskState;
+    private TextView txtMaskSession;
+    private TextView txtMaskTarget;
+    private TextView txtMaskSelect;
+    private TextView txtAllCount;
+    private TextView txtCount;
     private Button btnInventory;
     private Button btnClear;
     private Button btnMask;
 
-    private TagListAdapter adpTags;
+    private BluetoothAdapter btAdapter;
 
-    private MenuItem mnuDiscoveryDevice;
-    private MenuItem mnuReconnect;
-    private MenuItem mnuDisconnect;
+    private MenuItem mnuDiscoveryDevice = null;
+    private MenuItem mnuReconnect = null;
+    private MenuItem mnuDisconnect = null;
 
-//    private CustomDialog waitDialog;
-    private ProgressDialog dialog;
+    private RemoteDevice mLastDevice = null;
+    private Reader mReader = null;
 
-    private MainActivity.CheckTypeTask task;
-
+    private String[] sessionNames;
+    private String[] targetNames;
+    private String[] selectFlagNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setIcon(R.mipmap.ic_app);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        txtVersion = findViewById(R.id.version);
+        txtVersion.setText(AppInfoUtil.getVersion(this));
         txtConnState = findViewById(R.id.connect_state);
         txtConnState.setText(R.string.connection_state_disconnected);
 
         lstTags = findViewById(R.id.inventory_list);
         adpTags = new TagListAdapter();
         lstTags.setAdapter(adpTags);
+        lstTags.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        txtPowerLevel = findViewById(R.id.rf_power);
+        txtPowerLevel.setText("30 dBm");
+        txtPowerLevel.setOnClickListener(this);
+
+        txtMaskCount = findViewById(R.id.selection_mask_count);
+        txtMaskState = findViewById(R.id.selection_mask_state);
+        txtMaskSession = findViewById(R.id.selection_mask_session);
+        txtMaskTarget = findViewById(R.id.selection_mask_target);
+        txtMaskSelect = findViewById(R.id.selection_mask_selection_flag);
 
         txtAllCount = findViewById(R.id.all_count);
         txtCount = findViewById(R.id.overlap_count);
 
-        btnInventory = findViewById(R.id.button_inventory);
+        btnInventory = findViewById(R.id.action_inventory);
         btnInventory.setOnClickListener(this);
 
-        btnClear = findViewById(R.id.button_clear);
+        btnClear = findViewById(R.id.action_clear);
         btnClear.setOnClickListener(this);
 
-        btnMask = findViewById(R.id.button_mask);
+        btnMask = findViewById(R.id.action_mask);
         btnMask.setOnClickListener(this);
 
-        mHandler = new Handler();
+        sessionNames = getResources().getStringArray(R.array.session);
+        targetNames = getResources().getStringArray(R.array.session_target);
+        selectFlagNames = getResources().getStringArray(R.array.selection_flag_simple);
 
-//        waitDialog = new CustomDialog(this);
-        dialog = new ProgressDialog(this);
+        txtPowerLevel.setText("30 dBm");
+        txtMaskCount.setText("0");
+        txtMaskState.setText(getString(R.string.select_mask_disabled));
+        txtMaskSession.setText(sessionNames[0]);
+        txtMaskTarget.setText(targetNames[0]);
+        txtMaskSelect.setText(selectFlagNames[0]);
 
-        String[] target_permission = null;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            target_permission = PERMISSIONS_11;
-        } else {
-            target_permission = PERMISSIONS_12;
-        }
-        // 여기서 GRANT되지 않은 퍼미션을 검사
-        ArrayList<String> permissions = new ArrayList<>();
-        for (String permission : target_permission) {
-            if (checkSelfPermission(permission) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                permissions.add(permission);
-            }
-        }
-        // DENIED된 PERMISSION이 있다면 권한 요청
-        if (permissions.size() > 0) {
-            requestPermissions(permissions.toArray(new String[permissions.size()]),
-                    REQUEST_PERMISSION);
-        } else {
-            initBluetooth();
-        }
+        initBluetooth();
+        loadConfig();
+
+        updateCount();
+
+        enableWidgets(true);
+
+        Log.i(TAG, "INFO. onCreate()");
     }
 
     @Override
@@ -146,15 +175,21 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         mReader = Reader.getReader(this);
         if (mReader != null) {
             mReader.setEventListener(this);
-
-            btnInventory.setEnabled(true);
-            btnClear.setEnabled(true);
-            btnMask.setEnabled(false);
-        } else {
-            btnInventory.setEnabled(false);
-            btnClear.setEnabled(false);
-            btnMask.setEnabled(false);
+            if (mReader.isConnected()) {
+                updateReaderInfo();
+            }
         }
+        enableWidgets(true);
+        Log.i(TAG, "INFO. onResume()");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        enableWidgets(true);
+
+        Log.i(TAG, "INFO. onStart()");
     }
 
     @Override
@@ -165,11 +200,11 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
             mReader = null;
         }
         super.onPause();
+        Log.i(TAG, "INFO. onPause()");
     }
 
     @Override
     protected void onDestroy() {
-
         if (mReader != null) {
             if (mReader.isOperationRunning()) {
                 mReader.stopOperation();
@@ -183,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         super.onDestroy();
     }
 
-
     @Override
     public void onBackPressed() {
         if (mReader != null) {
@@ -194,10 +228,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
             mReader.stop();
             mReader.destroy();
             mReader = null;
-            mnuDiscoveryDevice.setVisible(true);
-            mnuReconnect.setVisible(true);
-            mnuDisconnect.setVisible(false);
-            txtConnState.setText(R.string.connection_state_disconnected);
         }
         super.onBackPressed();
     }
@@ -208,88 +238,55 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         mnuDiscoveryDevice = menu.findItem(R.id.discovery_device);
         mnuReconnect = menu.findItem(R.id.reconnect);
         mnuDisconnect = menu.findItem(R.id.disconnect);
-
-        RemoteDevice device = loadDevice();
-        if (device == null) {
-            mnuReconnect.setEnabled(false);
-        } else {
-            mnuReconnect.setEnabled(true);
-        }
-        mnuDisconnect.setVisible(false);
+        enableWidgets(true);
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
-
-            case R.id.discovery_device:
-                Intent intent = new Intent(this, SubActivity.class);
-                startActivityForResult(intent, REQ_DISCOVERY_DEVICE);
+           case R.id.discovery_device:
+               showDiscoveryDevice();
                 break;
-
             case R.id.disconnect:
-                if (mReader != null) {
-                    mReader.stop();
-                    //기기 연결 해제
-                    btnDisconnect();
-                    break;
-                }else if(mReader == null){
-                    //Toast.makeText(this, "비정상적인 접근 방식입니다. 앱을 재 실행 해주세요.", Toast.LENGTH_SHORT).show();
-                    MsgBox.show(MainActivity.this, R.string.msg_disconnect_error);
-                }
+                actionDisconnect();
                 break;
-
             case R.id.reconnect:
-
-                RemoteDevice device = loadDevice();
-
-                mReader = Reader.getReader(this,
-                        device, TIMEOUT);
-
-                if(mReader != null) {
-                    task = new CheckTypeTask();
-                    task.execute(mReader);
-                }else {
-                    MsgBox.show(MainActivity.this, R.string.msg_fail_connect);
-                }
-//                initViewReconnect();
-
+                actionConnect();
+                break;
         }
-
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_inventory:
+            case R.id.rf_power:
+                showPowerLevelDialog();
+                break;
+            case R.id.action_inventory:
                 inventory();
                 break;
-            case R.id.button_clear:
+            case R.id.action_clear:
                 adpTags.clear();
-                txtAllCount.setText("0");
-                txtCount.setText("0");
+                updateCount();
                 break;
-            case R.id.button_mask:
+            case R.id.action_mask:
+                showSelectMaskDialog();
                 break;
-
         }
     }
 
     @Override
     public void onReaderDeviceStateChanged(DeviceEvent status) {
-//        switch (status) {
-//            case CONNECTED:
-//                break;
-//            case DISCONNECTED:
-//                break;
-//        }
-//        if(status == DeviceEvent.DISCONNECTED){
-//            txtConnState.setText(R.string.connection_state_disconnect);
-//        }
-
+        switch (status) {
+            case CONNECTED:
+                txtConnState.setText(R.string.connection_state_connected);
+                break;
+            case DISCONNECTED:
+                txtConnState.setText(R.string.connection_state_disconnected);
+                break;
+        }
     }
 
     @Override
@@ -303,261 +300,134 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        boolean anyDenied = false;
-        if (requestCode == REQUEST_PERMISSION) {
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    anyDenied = true;
-                    break;
+    private void initBluetooth() {
+        btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (btAdapter.isEnabled()) {
+            enableWidgets(true);
+        } else {
+            showRequestEnableBluetooth();
+        }
+        Log.i(TAG, "INFO. initBluetooth()");
+    }
+
+    private void showRequestEnableBluetooth() {
+        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        enableWidgets(true);
+                    } else {
+                        MsgBox.show(MainActivity.this,
+                                R.string.msg_enable_bluetooth,
+                                new MsgBox.OnClickListener() {
+                                    @Override
+                                    public void onOkClicked() {
+                                        enableWidgets(true);
+                                    }
+                                });
+                    }
+                });
+        launcher.launch(intent);
+        Log.i(TAG, "INFO. showRequestEnableBluetooth()");
+    }
+
+    private ActivityResultLauncher<Intent> launcherDiscoveringResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    if ((mLastDevice = result.getData()
+                            .getParcelableExtra(Const.REMOTE_DEVICE)) != null) {
+                        saveConfig();
+                        if (mReader == null) {
+                            mReader = Reader.getReader(MainActivity.this);
+                        }
+                        if (mReader != null) {
+                            if (mReader.isConnected()) {
+                                updateReaderInfo();
+                            }
+                        }
+                    }
+                } else {
+                    if (mReader != null) {
+                        if (mReader.isConnected()) {
+                            if (mReader.isOperationRunning()) {
+                                mReader.stopOperation();
+                            }
+                            mReader.stop();
+                        }
+                        mReader = null;
+                    }
                 }
-            }
-            if (anyDenied) {
-                MsgBox.show(MainActivity.this,
-                        R.string.msg_denied_permission,
-                        new DialogInterface.OnClickListener() {
+                enableWidgets(true);
+            });
+
+    private void showDiscoveryDevice() {
+        Intent intent = new Intent(this, DiscoveryDeviceActivity.class);
+        launcherDiscoveringResult.launch(intent);
+        Log.i(TAG, "INFO. showDiscoveryDevice()");
+    }
+
+    private void actionConnect() {
+        WaitDialog.show(this, getString(R.string.msg_connect_device));
+        mReader = Reader.getReader(this,
+                mLastDevice, false, TIMEOUT);
+        if (mReader != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (mReader.start()) {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
+                            public void run() {
+                                WaitDialog.hide();
+                                mReader.setEventListener(MainActivity.this);
+                                if (mReader.isConnected()) {
+                                    updateReaderInfo();
+                                }
+                                enableWidgets(true);
                             }
                         });
-            } else {
-                initBluetooth();
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    @Nullable Intent data) {
-        switch (requestCode) {
-            case REQUEST_ENABLE_BT:
-                if (resultCode == Activity.RESULT_OK) {
-                    initView();
-                } else {
-                    MsgBox.show(MainActivity.this,
-                            R.string.msg_enable_bluetooth,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
-                }
-                break;
-            case REQ_DISCOVERY_DEVICE:
-                if (resultCode == Activity.RESULT_OK) {
-
-                    mnuDiscoveryDevice.setVisible(false);
-                    mnuReconnect.setVisible(false);
-                    mnuDisconnect.setVisible(true);
-                    txtConnState.setText(R.string.connection_state_connected);
-                    btnInventory.setEnabled(true);
-                    btnClear.setEnabled(true);
-                    btnMask.setEnabled(false);
-                    RemoteDevice device = data.getParcelableExtra(Const.REMOTE_DEVICE);
-                    if (device != null) {
-                        saveDevice(device);
-                    }
-                } else {
-                    mnuDiscoveryDevice.setVisible(true);
-                    mnuReconnect.setVisible(true);
-                    mnuDisconnect.setVisible(false);
-                    txtConnState.setText(R.string.connection_state_disconnected);
-                    btnInventory.setEnabled(false);
-                    btnClear.setEnabled(false);
-                    btnMask.setEnabled(false);
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private void initBluetooth() {
-        btAdapter = BluetoothAdapter.getDefaultAdapter();//BluetoothAdapter 객체를 획득한다.
-        if (btAdapter.isEnabled()) {//기기의 블루투스 상태가 on인 경우
-            initView();
-        } else {//기기의 블루투스 상태가 off인 경우
-            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            //ACTION_REQUEST_ENABLE 활동 작업 : 사용자가 Bluetooth를 켤 수 있는 시스템 활동을 표시
-            startActivityForResult(intent, REQUEST_ENABLE_BT);
-            //startActivityForResult() 새 액티비티를 열어줌 + 결과값 전달 (쌍방향)
-            //블루투스 기능이 활성화 되어있지 않다면 요청을 보낸다.
-        }
-    }
-
-    private void initView() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                RemoteDevice device = null;
-
-                if (mReader == null) {
-                    mReader = Reader.getReader(MainActivity.this,
-                            device, TIMEOUT);
-                    if (mReader != null) {
-                        if (!mReader.start()) {
-                            btnDisconnect();
-
-                        } else {
-                            btnConnect();
-
-                        }
-                    }
-                } else {
-
-                }
-            }
-        }, 500);
-    }
-
-    private void initViewReconnect(){
-//        mHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-                RemoteDevice device = loadDevice();
-
-                if (mReader == null) {
-                    mReader = Reader.getReader(MainActivity.this,
-                            device, TIMEOUT);
-                    if (mReader != null) {
-                        if (!mReader.start()) {
-                            btnDisconnect();
-
-                        } else {
-                            btnConnect();
-
-                        }
-                        mReader.setEventListener(MainActivity.this);
-                        //이벤트 읽어오기
-                    }
-                } else {
-
-                }
-//            }
-//        }, 500);
-    }
-
-
-    private class CheckTypeTask extends AsyncTask<Reader, Void, RemoteDevice> {
-
-
-//        CustomDialog waitDialog = new CustomDialog(SubActivity.this);
-
-        @Override
-        protected void onPreExecute(){
-
-            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            dialog.setMessage("Loading...");
-
-            dialog.show();
-        }
-
-        @Override
-        protected RemoteDevice doInBackground(Reader params[]) {
-            //여기서 백그라운드 스레드 작동
-
-            if (params == null || params.length < 0) {
-                return null;
-            }
-
-            Reader mReader = params[0];
-            RemoteDevice device = loadDevice();
-
-                if (mReader != null) {
-                    if (!mReader.start()) {
-//                        btnDisconnect();
-
-                        return null;
                     } else {
-//                        btnConnect();
-
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                WaitDialog.hide();
+                                mReader = null;
+                                enableWidgets(true);
+                                MsgBox.show(MainActivity.this,
+                                        R.string.msg_fail_connect);
+                            }
+                        });
                     }
-                    mReader.setEventListener(MainActivity.this);
-                    //이벤트 읽어오기
                 }
-
-            return device;
+            }).start();
+        } else {
+            WaitDialog.hide();
+            mReader = null;
+            enableWidgets(true);
+            MsgBox.show(MainActivity.this,
+                    R.string.msg_fail_connect);
         }
+        Log.i(TAG, "INFO. actionConnect()");
+    }
 
-        @Override
-        public void onPostExecute(RemoteDevice result){
-            dialog.dismiss();
-            if (result == null) {
-                btnDisconnect();
-                MsgBox.show(MainActivity.this, R.string.msg_fail_connect);
-            } else {
-                btnConnect();
-//                Intent intent = new Intent();
-//                intent.putExtra(Const.REMOTE_DEVICE, result);
-//                setResult(Activity.RESULT_OK, intent);
-//                finish();
+    private void actionDisconnect() {
+        if (mReader != null) {
+            WaitDialog.show(this, getString(R.string.msg_disconnect_device));
+            if (mReader.isOperationRunning()) {
+                mReader.stopOperation();
             }
+            mReader.stop();
+            mReader.destroy();
+            mReader = null;
+            enableWidgets(true);
+            WaitDialog.hide();
+        } else if (mReader == null) {
+            MsgBox.show(MainActivity.this,
+                    R.string.msg_disconnect_error);
         }
-    }
-
-    private void btnDisconnect(){
-        mnuDiscoveryDevice.setVisible(true);
-        mnuReconnect.setVisible(true);
-        mnuDisconnect.setVisible(false);
-        txtConnState.setText(R.string.connection_state_disconnected);
-        btnInventory.setEnabled(false);
-        btnClear.setEnabled(false);
-        btnMask.setEnabled(false);
-    }
-
-    private void btnConnect(){
-        mnuDiscoveryDevice.setVisible(false);
-        mnuReconnect.setVisible(false);
-        mnuDisconnect.setVisible(true);
-        txtConnState.setText(R.string.connection_state_connected);
-        btnInventory.setEnabled(true);
-        btnClear.setEnabled(true);
-        btnMask.setEnabled(false);
-    }
-
-
-    private void connectDevice() {
-        if ((mReader = Reader.getReader(this)) == null) {
-            btnInventory.setEnabled(false);
-            btnClear.setEnabled(false);
-            btnMask.setEnabled(false);
-
-            return;
-        }
-        RemoteDevice device = mReader.getRemoteDevice();
-        if (device == null) {
-            if (mReader != null) {
-                mReader.stop();
-                mReader.destroy();
-                mReader = null;
-                txtConnState.setText(R.string.connection_state_disconnected);
-            }
-            btnInventory.setEnabled(false);
-            btnClear.setEnabled(false);
-            btnMask.setEnabled(false);
-
-
-            return;
-        }
-        mReader.setEventListener(this);
-
-        btnInventory.setEnabled(true);
-        btnClear.setEnabled(true);
-        btnMask.setEnabled(false);
-
-        saveDevice(device);
-
-        Log.d(TAG, String.format(Locale.US, "DEBUG. SELECT DEVICE [[%s], [%s]]",
-                device.getName(), device.getAddress()));
+        Log.i(TAG, "INFO. actionDisconnect()");
     }
 
     private void inventory() {
@@ -570,10 +440,44 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
             mReader.stopOperation();
             btnInventory.setText(R.string.action_inventory);
         } else {
-            mReader.startInventory(true, false, true);
+            mReader.startInventory();
             btnInventory.setText(R.string.action_stop);
         }
+        enableWidgets(true);
         Log.i(TAG, String.format(Locale.US, "INFO. inventory()"));
+    }
+
+    private void showPowerLevelDialog() {
+        if (mReader == null)
+            return;
+        if (!mReader.isConnected())
+            return;
+
+        int powerGain = mReader.getRadioPower();
+        PowerGainDialog.show(this,
+                RFID.Power.MIN_POWER, RFID.Power.MAX_POWER, powerGain,
+                new PowerGainDialog.OnSelectPowerGainListener() {
+                    @Override
+                    public void onSelectPowerGain(int powerGain) {
+                        mReader.setRadioPower(powerGain);
+                        txtPowerLevel.setText(String.format(Locale.US, "%d dBm",
+                                powerGain));
+                    }
+                });
+
+        Log.i(TAG, "INFO. showPowerLevelDialog()");
+    }
+
+    private void showSelectMaskDialog() {
+        if (mReader == null)
+            return;
+        if (!mReader.isConnected())
+            return;
+
+        Intent intent = new Intent(this, SelectMaskActivity.class);
+        startActivity(intent);
+
+        Log.i(TAG, "INFO. showSelectMaskDialog()");
     }
 
     private void addTagData(String data) {
@@ -581,41 +485,93 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         if (pos >= 0) {
             String tag = data.substring(0, pos - 1);
             adpTags.add(tag);
-            txtAllCount.setText("" + adpTags.getTotalCount());
-            txtCount.setText("" + adpTags.getCount());
+            updateCount();
         }
     }
 
+    private void enableWidgets(boolean enabled) {
+        boolean isBluetooth = false;
+        boolean isDisconnected = false;
+        boolean isConnected = false;
+        boolean isOperation = false;
+        if (btAdapter != null)
+            isBluetooth = btAdapter.isEnabled();
+        isDisconnected = mReader == null;
+        if (mReader != null) {
+            isConnected = mReader.isConnected();
+            isOperation = mReader.isOperationRunning();
+        }
 
+        if (mnuDiscoveryDevice != null)
+            mnuDiscoveryDevice.setVisible(enabled && isBluetooth && isDisconnected);
+        if (mnuReconnect != null)
+            mnuReconnect.setVisible(enabled && isBluetooth && isDisconnected && mLastDevice != null);
+        if (mnuDisconnect != null)
+            mnuDisconnect.setVisible(enabled && isBluetooth && !isDisconnected && isConnected);
+        txtPowerLevel.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected);
+        btnInventory.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected);
+        btnClear.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
+        btnMask.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
+        txtConnState.setText(isDisconnected ?
+                R.string.connection_state_disconnected :
+                (isConnected ?
+                        R.string.connection_state_connected :
+                        R.string.connection_state_connecting));
+    }
 
+    private void updateCount() {
+        txtAllCount.setText(String.format(Locale.US, "%d", adpTags.getTotalCount()));
+        txtCount.setText(String.format(Locale.US, "%d", adpTags.getCount()));
+        Log.i(TAG, "INFO. updateCount()");
+    }
 
-    private static final String PREF_NAME = "rfid_inventory_sample";
-    private static final String LAST_ADDRESS = "last_dev_address";
+    private void updateReaderInfo() {
+        int powerGain = mReader.getRadioPower();
+        int maskState = mReader.getSelectionMaskState();
+        SelectionCriterias criterias = mReader.getSelectionMask();
+        int session = mReader.getSession();
+        int target = mReader.getInventorySessionTarget();
+        int selectFlag = mReader.getInventorySelectionTarget();
 
-    // Load Device from Share Preference
-    private RemoteDevice loadDevice() {
-        RemoteDevice loadDevice = null;
+        txtPowerLevel.setText(String.format(Locale.US, "%d dBm",
+                powerGain));
+        txtMaskCount.setText(String.format(Locale.US,
+                "%d", criterias.getCriteria().size()));
+        txtMaskState.setText(getString(maskState == RFID.ON ?
+                        R.string.select_mask_enabled : R.string.select_mask_disabled));
+        txtMaskSession.setText(sessionNames[session]);
+        txtMaskTarget.setText(targetNames[target]);
+        txtMaskSelect.setText(selectFlagNames[selectFlag]);
+        Log.i(TAG, "INFO. updateReaderInfo()");
+    }
+
+    // Load Configuration
+    private void loadConfig() {
         SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String address = pref.getString(LAST_ADDRESS, "");
         if (address != null && address.length() > 0) {
             BluetoothDevice btDevice = btAdapter.getRemoteDevice(address);
             if (btDevice != null) {
-                loadDevice = RemoteDevice.makeBtSppDevice(btDevice);
+                mLastDevice = RemoteDevice.makeBtSppDevice(btDevice);
             }
         }
-
-        return loadDevice;
+        Log.i(TAG, "INFO. loadConfig()");
     }
 
-    // Save Device to Share Preference
-    private void saveDevice(RemoteDevice device) {
+    // Save Configuration
+    private void saveConfig() {
         SharedPreferences pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor writer = pref.edit();
-        writer.putString(LAST_ADDRESS, device.getAddress());
+        String addrss;
+        if (mLastDevice == null) {
+            addrss = "";
+        } else {
+            addrss = mLastDevice.getAddress();
+        }
+        writer.putString(LAST_ADDRESS, addrss);
         writer.commit();
+        Log.i(TAG, "INFO. saveConfig()");
     }
-
-
 }
 
 

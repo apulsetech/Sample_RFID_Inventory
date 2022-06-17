@@ -1,23 +1,85 @@
 <resources>
-    <string name="app_name">INVENTORY SAMPLE</string>
-    <string name="action_start_discovering">SRART DISCOVERY</string>
-    <string name="action_stop_discovering">STOP DISCOVERY</string>
+    <string name="app_name">RFID Inventory Sample</string>
+    <string name="app_discovery_device_name">Discovery Device</string>
+    <string name="app_selection_mask_name">Selection Mask Configuration</string>
 
-    <string name="action_inventory">INVENTORY</string>
-    <string name="action_stop">STOP</string>
+    <string name="menu_discovery_device">Discovery Device</string>
+    <string name="menu_reconnect_device">Reconnect Device</string>
+    <string name="menu_disconnect_device">Disconnect Device</string>
+
+    <string name="action_start_discovering">Start Discovery</string>
+    <string name="action_stop_discovering">Stop Discovery</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_mask">Mask</string>
+    <string name="action_inventory">Inventory</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_save">Save</string>
+    <string name="action_select">Select</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="action_add">Add</string>
+    <string name="action_remove">Remove</string>
+
+    <string name="version_label">Version :</string>
+    <string name="rf_power_label">RF Power Level :</string>
     <string name="connection_state_label">Connection State :</string>
     <string name="connection_state_connected">CONNECTED</string>
     <string name="connection_state_connecting">CONNECTING</string>
     <string name="connection_state_disconnected">DISCONNECTED</string>
 
-    <string name="action_ok">OK</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_yes">Yes</string>
-    <string name="action_no">No</string>
+    <string name="paired_devices">Paired Devices</string>
+    <string name="discovering_devices">Discovering Devices</string>
 
-    <string name="msg_denied_permission">If you do not grant permission, you cannot use the app.</string>
+    <string name="selection_mask_setting_label">Selection Mask Setting</string>
+    <string name="inventory_setting_label">Inventory Setting</string>
+
+    <string name="select_mask_bank">Bank</string>
+    <string name="select_mask_target">Target</string>
+    <string name="select_mask_action">Action</string>
+    <string name="select_mask_offset">Offset</string>
+    <string name="select_mask_length">Length</string>
+    <string name="select_mask_data">Mask</string>
+
+    <string name="use_selection_mask">Use Selection Mask</string>
+    <string name="inventory_option_session">Session</string>
+    <string name="inventory_option_target">Target</string>
+    <string name="inventory_option_select_flag">Select Flag</string>
+
+    <string name="msg_question_denied_permission">If the permission is not granted, the app will not execute.\nAre you sure you want to set the permission again?</string>
+    <string name="msg_exit_denied_permission">Permission is denied. the app is not executed.</string>
+    <string name="msg_question_permanent_denied_permission">The permission is permanently denied.\nIf the permission is not granted, the app will not execute.\nDo you want to set permission in app settings?</string>
+    <string name="msg_delete_selection_mask">Are you sure you want to delete the selected Selection Mask?</string>
+    <string name="msg_delete_all_selection_mask">Are you sure you want to delete all Selection Masks?</string>
+
     <string name="msg_enable_bluetooth">If the bluetooth function is not activated, the APP cannot be used.</string>
     <string name="msg_disconnect_error">It"'"s an unusual approach Please relaunch the app.</string>
     <string name="msg_wait">Please wait</string>
+    <string name="msg_connect_device">Connecting with device.\nPlease wait a moment.</string>
+    <string name="msg_disconnect_device">Disconnecting to device.\nPlease wait a moment.</string>
     <string name="msg_fail_connect">Failed to connect remote device</string>
+
+    <string name="msg_fail_set_selection_mask_state">Failed to set selection mask state.</string>
+    <string name="msg_fail_set_selection_mask">Failed to set selection mask.</string>
+    <string name="msg_fail_remove_selection_mask">Failed to remove selection mask.</string>
+    <string name="msg_fail_set_session">Failed to set inventory session.</string>
+    <string name="msg_fail_set_target">Failed to set inventory target.</string>
+    <string name="msg_fail_set_select_target">Failed to set selection target.</string>
+
+    <string name="power_level_title">RF Power Level</string>
+
+    <string name="select_mask_entry_unit">Entry(s)</string>
+    <string name="select_mask_unit">bits</string>
+
+    <string name="title_add_select_mask">Add Selection Mask</string>
+    <string name="title_edit_select_mask">Edit Selection Mask</string>
+
+    <string name="select_mask_count">Selection Mask Count</string>
+    <string name="select_mask_enabled">Enabled</string>
+    <string name="select_mask_disabled">Disabled</string>
+    <string name="select_mask_session_label">Session</string>
+    <string name="select_mask_target_label">Target</string>
+    <string name="select_mask_select_flag_label">Selection Flag</string>
+
 </resources>

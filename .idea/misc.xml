@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable-v24/ic_launcher_foreground2.xml" value="0.169" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_button.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_count.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_group.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_splash.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_tag_list.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_wait_dialog.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_wait_progress.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/bg_wait_progress_transparent.xml" value="0.169" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/button_text_color.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/circle_progress.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/dialog_background.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_background.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_barcode_foreground.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_bluetooth_icon_1.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_disconnect.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_group_1.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_group_22.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_launcher_background.xml" value="0.169" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_launcher_foreground2.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_rfid_foregournd.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_rfid_icon_white_8mm_8.xml" value="0.284" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/ic_seag_loading_animation_2.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/progress_animation.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/progress_bg.xml" value="0.2435" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_discovery_device.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_main.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_progress.xml" value="0.28888888888888886" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_select_mask.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_splash.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/dialog_select_mask.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/dialog_single_select.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/dialog_wait.xml" value="0.28888888888888886" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/dialog_wait_progress.xml" value="0.28888888888888886" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/dialog_wait_progress_message.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/item_bt_dev_list.xml" value="0.4083333333333333" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/item_select_mask.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/item_single_select.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/item_tag_list.xml" value="0.4083333333333333" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/menu/menu_option.xml" value="0.2882943143812709" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.169" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.169" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

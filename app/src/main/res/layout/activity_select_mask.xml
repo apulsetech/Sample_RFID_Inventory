@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_padding"
+    tools:context=".SelectMaskActivity">
+
+    <TextView
+        android:id="@+id/selection_mask_setting_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/selection_mask_setting_label"
+        style="@style/TextView.OptionLabel"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layout_mask"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_mask"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        style="@style/LayoutGroup"
+        app:layout_constraintTop_toBottomOf="@+id/selection_mask_setting_label"
+        app:layout_constraintBottom_toTopOf="@+id/inventory_setting_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_select_mask_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/select_mask"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <CheckBox
+                android:id="@+id/use_select_mask"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/use_selection_mask"
+                style="@style/TextView.SubOptionLabel"
+                app:layout_constraintHorizontal_weight="@dimen/option_value_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/entry_count"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/entry_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                tools:text="0 Entry(s)"
+                style="@style/TextView.SubOptionValue"
+                app:layout_constraintHorizontal_weight="@dimen/option_label_weight"
+                app:layout_constraintStart_toEndOf="@+id/use_select_mask"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ListView
+            android:id="@+id/select_mask"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_list_view"
+            app:layout_constraintTop_toBottomOf="@+id/layout_select_mask_info"
+            app:layout_constraintBottom_toTopOf="@+id/layout_mask_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_mask_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/widget_interval_size"
+            app:layout_constraintTop_toBottomOf="@+id/select_mask"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/action_mask_add"
+                android:layout_width="0dp"
+                android:text="@string/action_add"
+                style="@style/Button.SubOption"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/action_mask_remove"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:id="@+id/action_mask_remove"
+                android:layout_width="0dp"
+                android:text="@string/action_remove"
+                style="@style/Button.SubOption"
+                app:layout_constraintStart_toEndOf="@+id/action_mask_add"
+                app:layout_constraintEnd_toStartOf="@+id/action_mask_clear"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:id="@+id/action_mask_clear"
+                android:layout_width="0dp"
+                android:text="@string/action_clear"
+                style="@style/Button.SubOption"
+                app:layout_constraintStart_toEndOf="@+id/action_mask_remove"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/inventory_setting_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/group_interval_size"
+        android:text="@string/inventory_setting_label"
+        style="@style/TextView.OptionLabel"
+        app:layout_constraintTop_toBottomOf="@+id/layout_mask"
+        app:layout_constraintBottom_toTopOf="@+id/layout_inventory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_inventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/widget_interval_size"
+        style="@style/LayoutGroup"
+        app:layout_constraintTop_toBottomOf="@+id/inventory_setting_label"
+        app:layout_constraintBottom_toTopOf="@+id/layout_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_inventory_option_session"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LayoutHorizontalOption"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/splite_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/inventory_option_session_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/inventory_option_session"
+                style="@style/TextView.SubOptionLabel"
+                app:layout_constraintHorizontal_weight="@dimen/horizontal_option_label_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/inventory_option_session"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/inventory_option_session"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/TextView.SubOptionSpinnerValue"
+                app:layout_constraintHorizontal_weight="@dimen/horizontal_option_value_weight"
+                app:layout_constraintStart_toEndOf="@+id/inventory_option_session_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/splite_1"
+            style="@style/ItemSpliteVertical"
+            app:layout_constraintTop_toBottomOf="@+id/layout_inventory_option_session"
+            app:layout_constraintBottom_toTopOf="@+id/layout_inventory_option_target"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_inventory_option_target"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/label_interval_size"
+            style="@style/LayoutHorizontalOption"
+            app:layout_constraintTop_toBottomOf="@+id/splite_1"
+            app:layout_constraintBottom_toTopOf="@+id/splite_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/inventory_option_target_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/inventory_option_target"
+                style="@style/TextView.SubOptionLabel"
+                app:layout_constraintHorizontal_weight="@dimen/horizontal_option_label_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/inventory_option_target"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/inventory_option_target"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/TextView.SubOptionSpinnerValue"
+                app:layout_constraintHorizontal_weight="@dimen/horizontal_option_value_weight"
+                app:layout_constraintStart_toEndOf="@+id/inventory_option_target_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/splite_2"
+            style="@style/ItemSpliteVertical"
+            app:layout_constraintTop_toBottomOf="@+id/layout_inventory_option_target"
+            app:layout_constraintBottom_toTopOf="@+id/layout_inventory_option_select_flag"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_inventory_option_select_flag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/label_interval_size"
+            style="@style/LayoutHorizontalOption"
+            app:layout_constraintTop_toBottomOf="@+id/splite_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/inventory_option_select_flag_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/inventory_option_select_flag"
+                style="@style/TextView.SubOptionLabel"
+                app:layout_constraintHorizontal_weight="@dimen/horizontal_option_label_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/inventory_option_select_flag"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/inventory_option_select_flag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/TextView.SubOptionSpinnerValue"
+                app:layout_constraintHorizontal_weight="@dimen/horizontal_option_value_weight"
+                app:layout_constraintStart_toEndOf="@+id/inventory_option_select_flag_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/group_interval_size"
+        app:layout_constraintTop_toBottomOf="@+id/layout_inventory"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/action_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/action_save"
+            style="@style/Button.Option"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/action_cancel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <Button
+            android:id="@+id/action_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/action_cancel"
+            style="@style/Button.Option"
+            app:layout_constraintStart_toEndOf="@+id/action_save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

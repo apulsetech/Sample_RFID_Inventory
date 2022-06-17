@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="5dp">
+    android:padding="@dimen/item_padding"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tag"
@@ -14,17 +13,19 @@
         android:layout_weight="9"
         android:layout_gravity="center_vertical"
         tools:text="123456789123456789"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/tag_item_text_size"
+        android:textColor="@color/tag_item_text_color"/>
 
     <TextView
         android:id="@+id/count"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center_vertical"
         android:gravity="center"
         tools:text="3"
-        android:textSize="18sp"
-        android:textColor="@color/black"
+        android:textSize="@dimen/tag_item_text_size"
+        android:textColor="@color/tag_item_count_text_color"
         android:textStyle="bold"/>
 
 </LinearLayout>

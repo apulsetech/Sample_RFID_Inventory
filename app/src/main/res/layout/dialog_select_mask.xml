@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dialog_padding"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/LayoutHorizontalOption">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_label_weight"
+            android:text="@string/select_mask_bank"
+            style="@style/TextView.SubOptionLabel"/>
+
+        <TextView
+            android:id="@+id/bank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_value_weight"
+            android:layout_marginVertical="7dp"
+            style="@style/TextView.SubOptionSpinnerValue"/>
+
+    </LinearLayout>
+
+    <View style="@style/ItemSpliteVertical"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/LayoutHorizontalOption">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_label_weight"
+            android:text="@string/select_mask_target"
+            style="@style/TextView.SubOptionLabel"/>
+
+        <TextView
+            android:id="@+id/target"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_value_weight"
+            style="@style/TextView.SubOptionSpinnerValue"/>
+
+    </LinearLayout>
+
+    <View style="@style/ItemSpliteVertical"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/LayoutHorizontalOption">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_mask_action"
+            style="@style/TextView.SubOptionLabel"/>
+
+        <TextView
+            android:id="@+id/action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextView.SubOptionSpinnerValue"/>
+
+    </LinearLayout>
+
+    <View style="@style/ItemSpliteVertical"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/LayoutHorizontalOption">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_unit_label_weight"
+            android:text="@string/select_mask_offset"
+            style="@style/TextView.SubOptionLabel"/>
+
+        <EditText
+            android:id="@+id/offset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_unit_value_weight"
+            android:inputType="number"
+            tools:text="16"
+            style="@style/TextView.SubOptionEditValue"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_unit_weight"
+            android:text="@string/select_mask_unit"
+            style="@style/TextView.SubOptionUnit"/>
+
+    </LinearLayout>
+
+    <View style="@style/ItemSpliteVertical"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/LayoutHorizontalOption">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_unit_label_weight"
+            android:text="@string/select_mask_length"
+            style="@style/TextView.SubOptionLabel"/>
+
+        <EditText
+            android:id="@+id/length"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_unit_value_weight"
+            tools:text="16"
+            style="@style/TextView.SubOptionEditValue"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/horizontal_dialog_unit_weight"
+            android:text="@string/select_mask_unit"
+            style="@style/TextView.SubOptionUnit"/>
+
+    </LinearLayout>
+
+    <View style="@style/ItemSpliteVertical"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/LayoutHorizontalOption">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_mask_data"
+            style="@style/TextView.SubOptionLabel"/>
+
+        <EditText
+            android:id="@+id/mask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789ABCDEFabcdef"
+            android:inputType="textCapCharacters"
+            style="@style/TextView.SubOptionEditValue"/>
+
+    </LinearLayout>
+
+</LinearLayout>

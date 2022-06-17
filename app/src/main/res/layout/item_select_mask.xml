@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/item_padding"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/widget_interval_size"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_mask_bank"
+                style="@style/TextView.SubOptionLabel"/>
+
+            <TextView
+                android:id="@+id/select_mask_bank"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                tools:text="EPC"
+                style="@style/TextView.SubOptionValue"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_mask_target"
+                style="@style/TextView.SubOptionLabel"/>
+
+            <TextView
+                android:id="@+id/select_mask_target"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                tools:text="SL"
+                style="@style/TextView.SubOptionValue"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/label_interval_size"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_mask_action"
+                style="@style/TextView.SubOptionLabel"/>
+
+            <TextView
+                android:id="@+id/select_mask_action"
+                android:layout_width="0dp"
+                android:layout_weight="3.4"
+                android:layout_height="wrap_content"
+                tools:text="Tag matching inventoried → A&#xA;Tag not matching inventoried → B"
+                style="@style/TextView.SubOptionValue"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/label_interval_size"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_mask_offset"
+                style="@style/TextView.SubOptionLabel"/>
+
+            <TextView
+                android:id="@+id/select_mask_offset"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                tools:text="16 bits"
+                style="@style/TextView.SubOptionValue"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_mask_length"
+                style="@style/TextView.SubOptionLabel"/>
+
+            <TextView
+                android:id="@+id/select_mask_length"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                tools:text="32 bits"
+                style="@style/TextView.SubOptionValue"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/label_interval_size"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_mask_data"
+                style="@style/TextView.SubOptionLabel"/>
+
+            <TextView
+                android:id="@+id/select_mask_data"
+                android:layout_width="0dp"
+                android:layout_weight="3.4"
+                android:layout_height="wrap_content"
+                tools:text="34001000"
+                style="@style/TextView.SubOptionValue"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

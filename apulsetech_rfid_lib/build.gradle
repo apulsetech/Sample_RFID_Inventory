@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('apulsetech_rfid_lib.aar'))
+artifacts.add("default", file('apulsetech_unified_lib.aar'))

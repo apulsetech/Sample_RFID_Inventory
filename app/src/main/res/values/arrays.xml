@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="memory_bank">
+        <item>Reserved</item>
+        <item>EPC</item>
+        <item>TID</item>
+        <item>User</item>
+    </string-array>
+
+    <string-array name="mask_target">
+        <item>S0</item>
+        <item>S1</item>
+        <item>S2</item>
+        <item>S3</item>
+        <item>SL</item>
+    </string-array>
+    
+    <string-array name="mask_action_session">
+        <item>Tag matching inventoried → A\nTag not matching inventoried → B</item>
+        <item>Tag matching inventoried → A\nTag not matching do nothing</item>
+        <item>Tag matching do nothing\nTag not matching inventoried → B</item>
+        <item>Tag matching A → B, B → A\nTag not matching do nothing</item>
+        <item>Tag matching inventoried → B\nTag not matching inventoried → A</item>
+        <item>Tag matching inventoried → B\nTag not matching do nothing</item>
+        <item>Tag matching do nothing\nTag not matching inventoried → A</item>
+        <item>Tag matching do nothing\nTag not matching A → B, B → A</item>
+    </string-array>
+
+    <string-array name="mask_action_select">
+        <item>Tag matching assert SL\nTag not matching deassert SL</item>
+        <item>Tag matching assert SL\nTag not matching do nothing</item>
+        <item>Tag matching do nothing\nTag not matching deassert SL</item>
+        <item>Tag matching negate SL\nTag not matching deassert SL</item>
+        <item>Tag matching deassert SL\nTag not matching assert SL</item>
+        <item>Tag matching deassert SL\nTag not matching do nothing</item>
+        <item>Tag matching do nothing\nTag not matching assert SL</item>
+        <item>Tag matching do nothing\nTag not matching negate SL</item>
+    </string-array>
+
+    <string-array name="session">
+        <item>S0</item>
+        <item>S1</item>
+        <item>S2</item>
+        <item>S3</item>
+    </string-array>
+
+    <string-array name="session_target">
+        <item>A</item>
+        <item>B</item>
+    </string-array>
+
+    <string-array name="selection_flag">
+        <item>All</item>
+        <item>Unselected</item>
+        <item>Selected</item>
+    </string-array>
+
+    <string-array name="selection_flag_simple">
+        <item>All</item>
+        <item>~SL</item>
+        <item>SL</item>
+    </string-array>
+</resources>
