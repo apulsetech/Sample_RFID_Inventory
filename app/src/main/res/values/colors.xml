@@ -68,4 +68,8 @@
     <color name="select_mask_background">#1B2C83</color>
     <color name="select_mask_text_color">#EFF1FF</color>
 
+    <color name="color_group_seperator">#AAAAAA</color>
+
+    <color name="color_label_caption">#33B5E5</color>
+
 </resources>
