@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
         android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".SampleApplication"
@@ -51,7 +53,7 @@
             android:screenOrientation="portrait"/>
 
         <receiver android:name=".receiver.GlobalKeyReceiver"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -59,8 +61,8 @@
         </receiver>
 
         <provider android:name="com.apulsetech.lib.provider.LocalStateProvider"
-            android:authorities="com.example.rfid_inventory_sample.LocalStateProvider"
-            android:exported="true"
+            android:authorities="com.apulsetech.sample.bluetooth.rfid.inventory_sample.LocalStateProvider"
+            android:exported="false"
             android:grantUriPermissions="true"
             tools:ignore="ExportedContentProvider" />
     </application>
