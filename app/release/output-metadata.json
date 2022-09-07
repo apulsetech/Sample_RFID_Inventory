@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.rfid_inventory_sample",
+  "applicationId": "com.apulsetech.sample.bluetooth.rfid.inventory_sample",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1,
-      "versionName": "1.0.0.79",
+      "versionCode": 2,
+      "versionName": "1.0.1.136",
       "outputFile": "app-release.apk"
     }
   ],
