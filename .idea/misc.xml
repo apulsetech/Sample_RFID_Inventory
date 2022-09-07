@@ -34,7 +34,7 @@
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/progress_animation.xml" value="0.2435" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/drawable/progress_bg.xml" value="0.2435" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_discovery_device.xml" value="0.2577702702702703" />
-        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_main.xml" value="0.2577702702702703" />
+        <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_main.xml" value="0.3262077811030355" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_progress.xml" value="0.28888888888888886" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_select_mask.xml" value="0.2577702702702703" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/layout/activity_splash.xml" value="0.25067567567567567" />
@@ -51,8 +51,6 @@
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/menu/menu_option.xml" value="0.25067567567567567" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.169" />
         <entry key="..\:/MySource/Apulsetech/Products/SDK/Android/Sample/Rfid_Inventory_Sample/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.169" />
-        <entry key="..\:/MySource/Product/Inventory_Sample_Trigger_App/app/src/main/res/drawable/theme_group_seperator.xml" value="0.1955" />
-        <entry key="..\:/MySource/Product/Inventory_Sample_Trigger_App/app/src/main/res/layout/activity_main.xml" value="0.25" />
       </map>
     </option>
   </component>

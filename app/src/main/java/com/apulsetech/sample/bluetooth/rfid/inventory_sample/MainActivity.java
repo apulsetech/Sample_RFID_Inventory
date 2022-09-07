@@ -57,24 +57,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.apulsetech.lib.barcode.type.BarcodeType;
-import com.apulsetech.lib.barcode.type.ConfigurationCode;
 import com.apulsetech.lib.event.DeviceEvent;
 import com.apulsetech.lib.event.ReaderEventListener;
 import com.apulsetech.lib.remote.type.RemoteDevice;
 import com.apulsetech.lib.rfid.Reader;
 import com.apulsetech.lib.rfid.type.RFID;
-import com.apulsetech.lib.rfid.type.ReaderModuleType;
 import com.apulsetech.lib.rfid.type.RfidResult;
 import com.apulsetech.lib.rfid.type.SelectionCriterias;
+import com.apulsetech.lib.util.LogUtil;
 import com.apulsetech.sample.bluetooth.rfid.inventory_sample.adapters.TagListAdapter;
 import com.apulsetech.sample.bluetooth.rfid.inventory_sample.data.Const;
 import com.apulsetech.sample.bluetooth.rfid.inventory_sample.dialogs.MsgBox;
 import com.apulsetech.sample.bluetooth.rfid.inventory_sample.dialogs.WaitDialog;
-import com.apulsetech.sample.bluetooth.rfid.inventory_sample.R;
 import com.apulsetech.sample.bluetooth.rfid.inventory_sample.dialogs.PowerGainDialog;
 import com.apulsetech.sample.bluetooth.rfid.inventory_sample.utlities.AppInfoUtil;
 
@@ -127,13 +123,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
     private String[] targetNames;
     private String[] selectFlagNames;
 
-    private ImageView mOperationSettingsDrawerButton;
-
-    ConstraintLayout mOperationSettings;
-
-    private Animation mDrawerExpandAnimation;
-    private Animation mDrawerCollapseAnimation;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,13 +167,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
 
         mHoldTriggerCheckBox = findViewById(R.id.buttonTrigger);
 
-        mOperationSettingsDrawerButton = findViewById(R.id.rfid_inventory_button_operation_settings_drawer);
-
-        mOperationSettings = (ConstraintLayout) findViewById(R.id.layout_options);
-
-        LinearLayout operationSettingsDrawerLayout = (LinearLayout) findViewById(R.id.rfid_inventory_layout_drawer);
-        operationSettingsDrawerLayout.setOnClickListener(mClickListener);
-
         sessionNames = getResources().getStringArray(R.array.session);
         targetNames = getResources().getStringArray(R.array.session_target);
         selectFlagNames = getResources().getStringArray(R.array.selection_flag_simple);
@@ -199,10 +181,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         mHoldTriggerCheckBox.setChecked(mHoldTriggerEnabled);
 
         mHoldTriggerCheckBox.setOnCheckedChangeListener(mCheckChangeListener);
-
-        mDrawerExpandAnimation = AnimationUtils.loadAnimation(this, R.anim.drawer_expand);
-        mDrawerCollapseAnimation = AnimationUtils.loadAnimation(this, R.anim.drawer_collapse);
-        mDrawerCollapseAnimation.setAnimationListener(mAnimationListener);
 
         initBluetooth();
         loadConfig();
@@ -323,23 +301,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         }
     }
 
-    private final Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mOperationSettings.setVisibility(View.GONE);
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-    };
-
     @Override
     public void onReaderDeviceStateChanged(DeviceEvent status) {
         switch (status) {
@@ -394,26 +355,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         launcher.launch(intent);
         Log.i(TAG, "INFO. showRequestEnableBluetooth()");
     }
-
-    private final View.OnClickListener mClickListener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            if (id == R.id.rfid_inventory_layout_drawer) {
-                if (mOperationSettingsExpanded) {
-                    mOperationSettingsDrawerButton.setImageResource(R.drawable.drawer_expand);
-                    mOperationSettings.startAnimation(mDrawerCollapseAnimation);
-                    mOperationSettingsExpanded = false;
-                }else {
-                    mOperationSettingsDrawerButton.setImageResource(R.drawable.drawer_collapse);
-                    mOperationSettings.setVisibility(View.VISIBLE);
-                    mOperationSettings.startAnimation(mDrawerExpandAnimation);
-                    mOperationSettingsExpanded = true;
-                }
-            }
-        }
-    };
 
     private ActivityResultLauncher<Intent> launcherDiscoveringResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
