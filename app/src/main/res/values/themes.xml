@@ -110,4 +110,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="theme_content_normal_label_group_text_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_label_caption</item>
+    </style>
+
+
 </resources>

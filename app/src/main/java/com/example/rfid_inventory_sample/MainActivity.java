@@ -39,25 +39,40 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.apulsetech.lib.barcode.type.BarcodeType;
+import com.apulsetech.lib.barcode.type.ConfigurationCode;
 import com.apulsetech.lib.event.DeviceEvent;
 import com.apulsetech.lib.event.ReaderEventListener;
 import com.apulsetech.lib.remote.type.RemoteDevice;
 import com.apulsetech.lib.rfid.Reader;
 import com.apulsetech.lib.rfid.type.RFID;
+import com.apulsetech.lib.rfid.type.ReaderModuleType;
+import com.apulsetech.lib.rfid.type.RfidResult;
 import com.apulsetech.lib.rfid.type.SelectionCriterias;
+import com.apulsetech.lib.util.LogUtil;
 import com.example.rfid_inventory_sample.adapters.TagListAdapter;
 import com.example.rfid_inventory_sample.data.Const;
 import com.example.rfid_inventory_sample.dialogs.MsgBox;
@@ -71,6 +86,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements ReaderEventListener,
         View.OnClickListener {
     private static final String TAG = "MainActivity";
+
+    private static final boolean D = true;
 
     private static final int TIMEOUT = 30000;
 
@@ -92,6 +109,13 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
     private Button btnInventory;
     private Button btnClear;
     private Button btnMask;
+    private CheckBox mHoldTriggerCheckBox;
+
+    private boolean mInventoryStarted = false;
+    private boolean mHoldTriggerEnabled = true;
+    private boolean mOperationSettingsExpanded = false;
+
+    private int ret;
 
     private BluetoothAdapter btAdapter;
 
@@ -105,6 +129,14 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
     private String[] sessionNames;
     private String[] targetNames;
     private String[] selectFlagNames;
+
+    private ImageView mOperationSettingsDrawerButton;
+
+    ConstraintLayout mOperationSettings;
+
+    private Animation mDrawerExpandAnimation;
+    private Animation mDrawerCollapseAnimation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +179,15 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         btnMask = findViewById(R.id.action_mask);
         btnMask.setOnClickListener(this);
 
+        mHoldTriggerCheckBox = findViewById(R.id.buttonTrigger);
+
+        mOperationSettingsDrawerButton = findViewById(R.id.rfid_inventory_button_operation_settings_drawer);
+
+        mOperationSettings = (ConstraintLayout) findViewById(R.id.layout_options);
+
+        LinearLayout operationSettingsDrawerLayout = (LinearLayout) findViewById(R.id.rfid_inventory_layout_drawer);
+        operationSettingsDrawerLayout.setOnClickListener(mClickListener);
+
         sessionNames = getResources().getStringArray(R.array.session);
         targetNames = getResources().getStringArray(R.array.session_target);
         selectFlagNames = getResources().getStringArray(R.array.selection_flag_simple);
@@ -157,6 +198,14 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         txtMaskSession.setText(sessionNames[0]);
         txtMaskTarget.setText(targetNames[0]);
         txtMaskSelect.setText(selectFlagNames[0]);
+
+        mHoldTriggerCheckBox.setChecked(mHoldTriggerEnabled);
+
+        mHoldTriggerCheckBox.setOnCheckedChangeListener(mCheckChangeListener);
+
+        mDrawerExpandAnimation = AnimationUtils.loadAnimation(this, R.anim.drawer_expand);
+        mDrawerCollapseAnimation = AnimationUtils.loadAnimation(this, R.anim.drawer_collapse);
+        mDrawerCollapseAnimation.setAnimationListener(mAnimationListener);
 
         initBluetooth();
         loadConfig();
@@ -277,6 +326,23 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         }
     }
 
+    private final Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mOperationSettings.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
+
     @Override
     public void onReaderDeviceStateChanged(DeviceEvent status) {
         switch (status) {
@@ -332,6 +398,26 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         Log.i(TAG, "INFO. showRequestEnableBluetooth()");
     }
 
+    private final View.OnClickListener mClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+            if (id == R.id.rfid_inventory_layout_drawer) {
+                if (mOperationSettingsExpanded) {
+                    mOperationSettingsDrawerButton.setImageResource(R.drawable.drawer_expand);
+                    mOperationSettings.startAnimation(mDrawerCollapseAnimation);
+                    mOperationSettingsExpanded = false;
+                }else {
+                    mOperationSettingsDrawerButton.setImageResource(R.drawable.drawer_collapse);
+                    mOperationSettings.setVisibility(View.VISIBLE);
+                    mOperationSettings.startAnimation(mDrawerExpandAnimation);
+                    mOperationSettingsExpanded = true;
+                }
+            }
+        }
+    };
+
     private ActivityResultLauncher<Intent> launcherDiscoveringResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -361,6 +447,18 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
                 }
                 enableWidgets(true);
             });
+
+    private final CompoundButton.OnCheckedChangeListener mCheckChangeListener =
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int id = buttonView.getId();
+                    if (id == R.id.buttonTrigger) {
+                        mHoldTriggerEnabled = isChecked;
+                    }
+                }
+            };
+
 
     private void showDiscoveryDevice() {
         Intent intent = new Intent(this, DiscoveryDeviceActivity.class);
@@ -397,6 +495,7 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
                                 enableWidgets(true);
                                 MsgBox.show(MainActivity.this,
                                         R.string.msg_fail_connect);
+
                             }
                         });
                     }
@@ -437,10 +536,10 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
             return;
         }
         if (mReader.isOperationRunning()) {
-            mReader.stopOperation();
+            ret =  mReader.stopOperation();
             btnInventory.setText(R.string.action_inventory);
         } else {
-            mReader.startInventory();
+            ret = mReader.startInventory();
             btnInventory.setText(R.string.action_stop);
         }
         enableWidgets(true);
@@ -512,6 +611,7 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         btnInventory.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected);
         btnClear.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
         btnMask.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
+        mHoldTriggerCheckBox.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
         txtConnState.setText(isDisconnected ?
                 R.string.connection_state_disconnected :
                 (isConnected ?
@@ -571,6 +671,63 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         writer.putString(LAST_ADDRESS, addrss);
         writer.commit();
         Log.i(TAG, "INFO. saveConfig()");
+    }
+
+    private void processKeyDown() {
+        LogUtil.log(LogUtil.LV_D, D, TAG, "processKeyDown()");
+
+        if (!mInventoryStarted) {
+             inventory();
+            if (ret == RfidResult.SUCCESS) {
+                mInventoryStarted = true;
+                enableWidgets(false);
+            }else if (ret == RfidResult.LOW_BATTERY)
+            {
+                Toast.makeText(this, "Low battery!",
+                        Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this,
+                        "Failed to start inventory!", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            inventory();
+            if (ret == RfidResult.SUCCESS) {
+                mInventoryStarted = false;
+                enableWidgets(true);
+            } else if (ret == RfidResult.STOP_FAILED_TRY_AGAIN) {
+                Toast.makeText(this,
+                        "Failed to stop inventory!!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void processKeyUp() {
+        LogUtil.log(LogUtil.LV_D, D ,TAG, "processKeyUp()");
+
+        if (mInventoryStarted && !mHoldTriggerEnabled) {
+            inventory();
+            if (ret == RfidResult.SUCCESS) {
+                mInventoryStarted = false;
+                enableWidgets(true);
+            } else if (ret == RfidResult.STOP_FAILED_TRY_AGAIN) {
+                Toast.makeText(this,
+                        "Failed to stop inventory!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // Rfid Reader Key process
+    @Override
+    public void onReaderRemoteKeyEvent(int action, int keyCode) {
+        LogUtil.log(LogUtil.LV_D, D ,TAG, "onReaderRemoteKeyEvent : action=" + action + "keyCode" + keyCode);
+
+        if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT) {
+            if (action == KeyEvent.ACTION_DOWN) {
+                processKeyDown();
+            }else if (action == KeyEvent.ACTION_UP) {
+                processKeyUp();
+            }
+        }
     }
 }
 
