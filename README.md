@@ -1,2 +1,2 @@
-# RFID_Inventory_Sample
+# RFID Inventory Sample
 RFID Inventory example source via Bluetooth connection to Apulsetech Remote Device.
