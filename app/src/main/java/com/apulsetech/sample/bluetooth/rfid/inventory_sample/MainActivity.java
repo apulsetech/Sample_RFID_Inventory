@@ -320,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
                 addTagData(data);
                 Log.d(TAG, String.format(Locale.US,
                         "EVENT. INVENTORY [%s]", data));
-                break;
         }
     }
 
@@ -546,6 +545,7 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         if (mnuDisconnect != null)
             mnuDisconnect.setVisible(enabled && isBluetooth && !isDisconnected && isConnected);
         txtPowerLevel.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected);
+
         btnInventory.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected);
         btnClear.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
         btnMask.setEnabled(enabled && isBluetooth && !isDisconnected && isConnected && !isOperation);
@@ -560,6 +560,7 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
     private void updateCount() {
         txtAllCount.setText(String.format(Locale.US, "%d", adpTags.getTotalCount()));
         txtCount.setText(String.format(Locale.US, "%d", adpTags.getCount()));
+
         Log.i(TAG, "INFO. updateCount()");
     }
 
@@ -618,7 +619,8 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
              inventory();
             if (ret == RfidResult.SUCCESS) {
                 mInventoryStarted = true;
-                enableWidgets(false);
+                //2022.10.28_Asyen "Inventory False"
+                //enableWidgets(false);
             }else if (ret == RfidResult.LOW_BATTERY)
             {
                 Toast.makeText(this, "Low battery!",
@@ -643,7 +645,10 @@ public class MainActivity extends AppCompatActivity implements ReaderEventListen
         LogUtil.log(LogUtil.LV_D, D ,TAG, "processKeyUp()");
 
         if (mInventoryStarted && !mHoldTriggerEnabled) {
-            inventory();
+            //2022.10.28 "Check Inventory status when in push mode"
+            if (mReader.isOperationRunning())
+                inventory();
+
             if (ret == RfidResult.SUCCESS) {
                 mInventoryStarted = false;
                 enableWidgets(true);
