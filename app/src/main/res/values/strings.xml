@@ -25,7 +25,7 @@
     <string name="version_label">Version :</string>
     <string name="rf_power_label">RF Power Level :</string>
     <string name="connection_state_label">Connection State :</string>
-    <string name="trigger_toggle">Toggle Triger</string>
+    <string name="trigger_toggle">Toggle Trigger</string>
     <string name="connection_state_connected">CONNECTED</string>
     <string name="connection_state_connecting">CONNECTING</string>
     <string name="connection_state_disconnected">DISCONNECTED</string>
